@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * TaskHandler.
+ * 任务处理器.
  *
  * @author wang_fei
  * @since 2022/5/27 11:04
@@ -20,18 +20,9 @@ public abstract class TaskHandler<T extends Task> {
     private T task;
 
     // 后继任务
-    protected List<TaskHandler> nextList;
+    protected List<? extends TaskHandler> nextList;
 
-    // 设置后继任务
-    public void setNextList(List<TaskHandler> nextList) {
-        this.nextList = nextList;
-    }
-    public List<TaskHandler> getNextList() {
-        return this.nextList;
-    }
-
-
-    // 处理任务请求
+    // 处理请求
     public abstract Object handleRequest(Object param);
 
 }

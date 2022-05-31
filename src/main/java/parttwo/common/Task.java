@@ -6,7 +6,7 @@ import lombok.Setter;
 import java.util.List;
 
 /**
- * Task.
+ * 任务.
  *
  * @author wang_fei
  * @since 2022/5/27 11:11
@@ -21,5 +21,5 @@ public class Task {
 
     private Boolean sfzd;
 
-    private int cjsz;
+    private int cjsd;
 }
