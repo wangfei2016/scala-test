@@ -72,7 +72,20 @@ public class Taskflow<T extends TaskHandler> {
     }
 
     public void run(Object param) {
-        // map0 -> map1 -> map2
+        TaskGroup<T> group = new TaskGroup<>(data.get(0));
+        for (Map.Entry<Integer, List<T>> entry : data.entrySet()) {
+            if (0 == entry.getKey()) {
+                continue;
+            }
+            List<T> data = new ArrayList<>();
+            for (T t : entry.getValue()) {
+                if (t.getTask().getCjsd() != entry.getKey()) {
+                    continue;
+                }
+                data.add(t);
+            }
+            group.add(data);
+        }
         for (Map.Entry<Integer, List<T>> entry : data.entrySet()) {
             for (T t : entry.getValue()) {
                 if (t.getTask().getCjsd() != entry.getKey()) {
@@ -83,34 +96,39 @@ public class Taskflow<T extends TaskHandler> {
             System.out.println(">>>>>>>>>>>>" );
             System.out.println();
         }
+        System.out.println();
     }
 
-//    class TaskGroup<T> {
-//
-//        List<T> currentList;
-//
-//        List<T> nextList;
-//
-//        public TaskGroup(List<T> head) {
-//            currentList = head;
-//        }
-//
-//        // 添加新的结点
-//        public void add(List<T> nodeList) {
-//            if (this.nextList == null)
-//                this.nextList = nodeList;
-//            else
-//                this.nextList.add(nodeList) ;
-//
-//        }
-//        // 打印链表
-////        public void print() {
-////            System.out.print(this.val);
-////            if (this.next != null) {
-////                System.out.print("-->");
-////                this.next.print();
-////            }
-////        }
-//    }
+    class TaskGroup<T extends TaskHandler> {
+
+        List<T> data;
+
+        TaskGroup<T> next;
+
+        public TaskGroup(List<T> data) {
+            this.data = data;
+        }
+
+        // 添加新的结点
+        public void add(List<T> data) {
+            if (null == this.next)
+                this.next = new TaskGroup(data);
+            else
+                this.next.add(data);
+
+        }
+
+        // 打印的结点
+        public void print() {
+            System.out.print("<-->");
+            this.data.forEach(d -> {
+                System.out.print(d.getTask().getId());
+            });
+            if (this.next != null) {
+                this.next.print();
+            }
+            System.out.print("<-->");
+        }
+    }
 }
 
