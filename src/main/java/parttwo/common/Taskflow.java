@@ -37,24 +37,28 @@ public class Taskflow<T extends TaskHandler> {
         data = new HashMap<>();
         data.put(0, Collections.singletonList(head));
         this.buidData(list, head, data);
-        System.out.println("");
     }
 
-    private void buidData(List<T> list, TaskHandler current, Map<Integer, List<T>> data) {
+    private void buidData(List<T> list, T current, Map<Integer, List<T>> data) {
         if (CollectionUtils.isEmpty(list) || null == current || CollectionUtils.isEmpty(current.getNextList())) {
             return;
         }
         List<T> nextList = current.getNextList();
         for (T handler : nextList) {
-            handler.getTask().setCjsd(Math.max(handler.getTask().getCjsd(), current.getTask().getCjsd() + 1));
+            order(handler, current);
             setData(data, handler);
-            if (null != handler.getTask().getSfzd() && handler.getTask().getSfzd()) {
+            nextList = list.stream().filter(t -> null != t.getTask().getFid() && t.getTask().getFid()
+                    .contains(handler.getTask().getId())).collect(Collectors.toList());
+            if (CollectionUtils.isEmpty(nextList)) {
                 continue;
             }
-            handler.setNextList(list.stream().filter(t -> null != t.getTask().getFid() && t.getTask().getFid()
-                    .contains(handler.getTask().getId())).collect(Collectors.toList()));
+            handler.setNextList(nextList);
             buidData(list, handler, data);
         }
+    }
+
+    private void order(T handler, T current) {
+        handler.getTask().setCjsd(Math.max(handler.getTask().getCjsd(), current.getTask().getCjsd() + 1));
     }
 
     private void setData(Map<Integer, List<T>> data, T handler) {
@@ -86,17 +90,7 @@ public class Taskflow<T extends TaskHandler> {
             }
             group.add(data);
         }
-        for (Map.Entry<Integer, List<T>> entry : data.entrySet()) {
-            for (T t : entry.getValue()) {
-                if (t.getTask().getCjsd() != entry.getKey()) {
-                    continue;
-                }
-                t.handleRequest(5);
-            }
-            System.out.println(">>>>>>>>>>>>" );
-            System.out.println();
-        }
-        System.out.println();
+        group.run(5);
     }
 
     class TaskGroup<T extends TaskHandler> {
@@ -109,7 +103,6 @@ public class Taskflow<T extends TaskHandler> {
             this.data = data;
         }
 
-        // 添加新的结点
         public void add(List<T> data) {
             if (null == this.next)
                 this.next = new TaskGroup(data);
@@ -118,16 +111,15 @@ public class Taskflow<T extends TaskHandler> {
 
         }
 
-        // 打印的结点
-        public void print() {
-            System.out.print("<-->");
+        public void run(Object param) {
+            System.out.println();
+            System.out.print("<--");
             this.data.forEach(d -> {
-                System.out.print(d.getTask().getId());
+                d.handleRequest(param);
             });
             if (this.next != null) {
-                this.next.print();
+                this.next.run(param);
             }
-            System.out.print("<-->");
         }
     }
 }

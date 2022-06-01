@@ -19,7 +19,7 @@ public class Task {
 
     private List<String> fid;
 
-    private Boolean sfzd;
-
     private int cjsd;
+
+    private List<? extends Task> children;
 }

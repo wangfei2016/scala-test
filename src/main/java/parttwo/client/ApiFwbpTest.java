@@ -1,6 +1,5 @@
 package parttwo.client;
 
-import javafx.application.Application;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +58,7 @@ public class ApiFwbpTest {
         Fwjd f2 = new Fwjd();
         f2.setId("1");
         f2.setLx("2");
-        f2.setFid(Arrays.asList("0","4"));
+        f2.setFid(Arrays.asList("0", "4"));
         f2.setMc("Activity1");
         Fwjd f3 = new Fwjd();
         f3.setId("4");
@@ -94,7 +93,6 @@ public class ApiFwbpTest {
         f7.setLx("3");
         f7.setFid(Arrays.asList("5"));
         f7.setMc("end");
-        f7.setSfzd(true);
         list.add(f1);
         list.add(f2);
         list.add(f3);
