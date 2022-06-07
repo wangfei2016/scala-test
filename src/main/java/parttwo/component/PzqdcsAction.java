@@ -12,6 +12,11 @@ import org.springframework.stereotype.Component;
 public class PzqdcsAction implements FwjdAction {
 
     @Override
+    public void prepare() {
+        System.out.println("prepare...");
+    }
+
+    @Override
     public void execute() {
         System.out.println("配置启动参数Action");
     }

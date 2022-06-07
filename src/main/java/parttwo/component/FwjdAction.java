@@ -1,14 +1,15 @@
 package parttwo.component;
 
 /**
- * FwjdAction.
+ * 服务编排节点操作接口.
  *
  * @author wang_fei
  * @since 2022/5/30 17:22
  */
 public interface FwjdAction {
 
-    // 执行中
+    void prepare();
+
     void execute();
 
 }

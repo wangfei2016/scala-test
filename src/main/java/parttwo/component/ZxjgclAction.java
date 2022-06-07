@@ -12,6 +12,11 @@ import org.springframework.stereotype.Component;
 public class ZxjgclAction implements FwjdAction {
 
     @Override
+    public void prepare() {
+        System.out.println("prepare...");
+    }
+
+    @Override
     public void execute() {
         System.out.println("执行结果处理Action");
     }
